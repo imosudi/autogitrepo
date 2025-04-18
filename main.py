@@ -1,11 +1,11 @@
 import time
-from logic import githubManipulations, stylesheetManipulations, authenticate_github, list_repositories
+from logic import githubManipulations, stylesheetManipulations
 
 #authenticate_github()
 #g = authenticate_github()
 #list_repositories(g)
 
-filename    = "input_files/test_formatted_expert_assignments.xlsx"
+filename    = "input_files/test_formatted_modelling_computer_simulation.xlsx"
 sheetOPS    = stylesheetManipulations(filename)
 githubOPS   = githubManipulations()
 auth        = githubOPS.authenticate_github()
@@ -14,19 +14,30 @@ table_columns   = sheetOPS.columnHeader()
 table_rows      = sheetOPS.tableRows()
 print("table_columns: ", table_columns, "\n")
 #print("table_rows: ", table_rows)
+
+#all_repo = githubOPS.list_repositories(auth)
+#this_repo = githubOPS.search_my_repositories(auth, "Loan-Approval-Expert-System")
+#print(this_repo)
+#for repo in this_repo:
+#    print(repo.name)
+#    print(repo.description)
+
+    
+
 for row in table_rows:
-    print(type(row))
-    print(row["No."])
-    print(row["Setup Instructions"], type(row["Setup Instructions"]))
+    #print(type(row))
+    #print(row["No."])
+    #print(row["Setup Instructions"], "\n") #, type(row["Setup Instructions"]))
     try:
-        title = row["Assignment Title"].replace("Expert ", "")
-        title = title.replace(" System", "")
+        title = row["Assignment Title"]#.replace("Expert ", "")
+        #title = title.replace(" System", "")
         description = row["Objective"]
         #print(title)
         #print("row: ", row)
-        readme = sheetOPS.generate_readme(row)
-        #print("readme: ", type(readme))
-        createRepo = githubOPS.create_new_repository(auth, title, description, readme)
+        readme = sheetOPS.generate_readme_simulations(row)
+        #print("readme: ", type(readme), readme)
+        createRepo = githubOPS.create_new_repository(auth, title, description, readme, filename)
+
     except:
         pass
     for column in table_columns:
